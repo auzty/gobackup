@@ -24,15 +24,16 @@ var (
 
 // ModelConfig for special case
 type ModelConfig struct {
-	Name         string
-	DumpPath     string
-	CompressWith SubConfig
-	EncryptWith  SubConfig
-	StoreWith    SubConfig
-	Archive      *viper.Viper
-	Databases    []SubConfig
-	Storages     []SubConfig
-	Viper        *viper.Viper
+	Name          string
+	DumpPath      string
+	CompressWith  SubConfig
+	EncryptWith   SubConfig
+	StoreWith     SubConfig
+	Archive       *viper.Viper
+	Databases     []SubConfig
+	Storages      []SubConfig
+	Viper         *viper.Viper
+	Notifications SubConfig
 }
 
 // SubConfig sub config info
@@ -103,6 +104,11 @@ func loadModel(key string) (model ModelConfig) {
 	model.StoreWith = SubConfig{
 		Type:  model.Viper.GetString("store_with.type"),
 		Viper: model.Viper.Sub("store_with"),
+	}
+
+	model.Notifications = SubConfig{
+		Type:  model.Viper.GetString("notification.type"),
+		Viper: model.Viper.Sub("notification"),
 	}
 
 	model.Archive = model.Viper.Sub("archive")

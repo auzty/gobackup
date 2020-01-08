@@ -19,12 +19,13 @@ import (
 // password:
 type PostgreSQL struct {
 	Base
-	host        string
-	port        string
-	database    string
-	username    string
-	password    string
-	dumpCommand string
+	host          string
+	port          string
+	database      string
+	username      string
+	password      string
+	dumpCommand   string
+	customCommand string
 }
 
 func (ctx PostgreSQL) perform() (err error) {
@@ -37,6 +38,7 @@ func (ctx PostgreSQL) perform() (err error) {
 	ctx.database = viper.GetString("database")
 	ctx.username = viper.GetString("username")
 	ctx.password = viper.GetString("password")
+	ctx.customCommand = viper.GetString("additional_options")
 
 	if err = ctx.prepare(); err != nil {
 		return
@@ -52,6 +54,11 @@ func (ctx *PostgreSQL) prepare() (err error) {
 	if len(ctx.database) == 0 {
 		return fmt.Errorf("PostgreSQL database config is required")
 	}
+
+	if len(ctx.customCommand) > 0 {
+		dumpArgs = append(dumpArgs, ctx.customCommand)
+	}
+
 	if len(ctx.host) > 0 {
 		dumpArgs = append(dumpArgs, "--host="+ctx.host)
 	}
