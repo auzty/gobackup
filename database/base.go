@@ -2,9 +2,9 @@ package database
 
 import (
 	"fmt"
-	"github.com/huacnlee/gobackup/config"
-	"github.com/huacnlee/gobackup/helper"
-	"github.com/huacnlee/gobackup/logger"
+	"bitbucket.org/auzty/gobackup/config"
+	"bitbucket.org/auzty/gobackup/helper"
+	"bitbucket.org/auzty/gobackup/logger"
 	"github.com/spf13/viper"
 	"path"
 )

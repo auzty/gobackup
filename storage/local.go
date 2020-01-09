@@ -1,8 +1,8 @@
 package storage
 
 import (
-	"github.com/huacnlee/gobackup/helper"
-	"github.com/huacnlee/gobackup/logger"
+	"bitbucket.org/auzty/gobackup/helper"
+	"bitbucket.org/auzty/gobackup/logger"
 	"path"
 )
 

@@ -1,7 +1,7 @@
 package database
 
 import (
-	"github.com/huacnlee/gobackup/config"
+	"bitbucket.org/auzty/gobackup/config"
 	// "github.com/spf13/viper"
 	"testing"
 

@@ -11,7 +11,7 @@ require (
 	github.com/fsnotify/fsnotify v0.0.0-20161011023312-629574ca2a5d
 	github.com/go-ini/ini v0.0.0-20170813051516-20b96f641a5e
 	github.com/hashicorp/hcl v0.0.0-20171009174708-42e33e2d55a0
-	github.com/huacnlee/gobackup v0.0.0-20191112091558-82fbe0a9c0f6
+	bitbucket.org/auzty/gobackup v0.0.0-20191112091558-82fbe0a9c0f6
 	github.com/jmespath/go-jmespath v0.0.0-20160202185014-0b12d6b521d8
 	github.com/magiconair/properties v0.0.0-20170710124859-be5ece7dd465
 	github.com/mattn/go-colorable v0.0.0-20170801030607-167de6bfdfba

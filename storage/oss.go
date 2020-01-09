@@ -4,7 +4,7 @@ import (
 	"path"
 
 	"github.com/aliyun/aliyun-oss-go-sdk/oss"
-	"github.com/huacnlee/gobackup/logger"
+	"bitbucket.org/auzty/gobackup/logger"
 )
 
 // OSS - Aliyun OSS storage

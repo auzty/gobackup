@@ -1,7 +1,7 @@
 package compressor
 
 import (
-	"github.com/huacnlee/gobackup/helper"
+	"bitbucket.org/auzty/gobackup/helper"
 	"github.com/stretchr/testify/assert"
 	"testing"
 )

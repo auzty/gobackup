@@ -3,13 +3,14 @@ package model
 import (
 	"os"
 
-	"github.com/huacnlee/gobackup/archive"
-	"github.com/huacnlee/gobackup/compressor"
-	"github.com/huacnlee/gobackup/config"
-	"github.com/huacnlee/gobackup/database"
-	"github.com/huacnlee/gobackup/encryptor"
-	"github.com/huacnlee/gobackup/logger"
-	"github.com/huacnlee/gobackup/storage"
+	"bitbucket.org/auzty/gobackup/archive"
+	"bitbucket.org/auzty/gobackup/compressor"
+	"bitbucket.org/auzty/gobackup/config"
+	"bitbucket.org/auzty/gobackup/database"
+	"bitbucket.org/auzty/gobackup/encryptor"
+	"bitbucket.org/auzty/gobackup/logger"
+	"bitbucket.org/auzty/gobackup/notification"
+	"bitbucket.org/auzty/gobackup/storage"
 )
 
 // Model class
@@ -19,7 +20,7 @@ type Model struct {
 
 // Perform model
 func (ctx Model) Perform() {
-	logger.Info("======== " + ctx.Config.Name + " ========")
+	logger.Info("##====== " + ctx.Config.Name + " ========")
 	logger.Info("WorkDir:", ctx.Config.DumpPath+"\n")
 	defer ctx.cleanup()
 
@@ -50,6 +51,12 @@ func (ctx Model) Perform() {
 	}
 
 	err = storage.Run(ctx.Config, archivePath)
+	if err != nil {
+		logger.Error(err)
+		return
+	}
+
+	_, err = notification.Run(ctx.Config, archivePath)
 	if err != nil {
 		logger.Error(err)
 		return

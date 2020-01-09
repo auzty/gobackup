@@ -2,7 +2,7 @@ package database
 
 import (
 	"fmt"
-	"github.com/huacnlee/gobackup/config"
+	"bitbucket.org/auzty/gobackup/config"
 	"github.com/stretchr/testify/assert"
 	"testing"
 )

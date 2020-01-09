@@ -4,7 +4,7 @@ import (
 	"bytes"
 	"errors"
 	"fmt"
-	"github.com/huacnlee/gobackup/logger"
+	"bitbucket.org/auzty/gobackup/logger"
 	"os"
 	"os/exec"
 	"regexp"

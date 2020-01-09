@@ -4,8 +4,8 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/huacnlee/gobackup/config"
-	"github.com/huacnlee/gobackup/model"
+	"bitbucket.org/auzty/gobackup/config"
+	"bitbucket.org/auzty/gobackup/model"
 	"gopkg.in/urfave/cli.v1"
 )
 

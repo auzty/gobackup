@@ -1,27 +1,24 @@
 package notification
 
 import (
-	"fmt"
-
-	"github.com/huacnlee/gobackup/config"
-	"github.com/huacnlee/gobackup/logger"
+	"bitbucket.org/auzty/gobackup/config"
+	"bitbucket.org/auzty/gobackup/logger"
 	"github.com/spf13/viper"
 )
 
-// Base compressor
+// Base notification
 type Base struct {
 	name  string
 	model config.ModelConfig
 	viper *viper.Viper
 }
 
-// Context compressor
+// Context notification
 type Context interface {
-	perform()
+	perform(backupPath string) (archivePath string, err error)
 }
 
 func newBase(model config.ModelConfig) (base Base) {
-	fmt.Println("heheheh")
 	base = Base{
 		name:  model.Name,
 		model: model,
@@ -30,23 +27,21 @@ func newBase(model config.ModelConfig) (base Base) {
 	return
 }
 
-// Run compressor
-func Run(model config.ModelConfig) (archivePath string, err error) {
-	//base := newBase(model)
-	var ctx Context
-	ctx.perform()
+// Run notification
+func Run(model config.ModelConfig, backupPath string) (archivePath string, err error) {
+	base := newBase(model)
 
-	/*
-		var ctx Context
-		switch model.Name.Type {
-		case "slack":
-			ctx = &Slack{Base: base}
-		default:
-			ctx = &Slack{}
-		}
-	*/
+	//	logger.Info(model.Notifications, "######")
+	var ctx Context
+	switch model.Notifications.Type {
+	case "slack":
+		ctx = &Slack{Base: base}
+	default:
+		logger.Info("error default")
+	}
 
 	logger.Info("------------ Notification -------------")
+	ctx.perform(backupPath)
 
 	logger.Info("------------ -------------\n")
 
