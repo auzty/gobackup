@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"os"
 
 	"github.com/huacnlee/gobackup/config"
@@ -55,6 +56,7 @@ func performAll() {
 		}
 		m.Perform()
 	}
+	fmt.Println(config.Models)
 }
 
 func performOne(modelName string) {
