@@ -1,6 +1,8 @@
 package notification
 
 import (
+	"time"
+
 	"bitbucket.org/auzty/gobackup/config"
 	"bitbucket.org/auzty/gobackup/logger"
 	"github.com/spf13/viper"
@@ -11,6 +13,12 @@ type Base struct {
 	name  string
 	model config.ModelConfig
 	viper *viper.Viper
+}
+
+type Report struct {
+	StartTime time.Time
+	EndTime   time.Time
+	Duration  string
 }
 
 // Context notification
