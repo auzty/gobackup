@@ -11,9 +11,9 @@ import (
 	"bitbucket.org/auzty/gobackup/logger"
 )
 
-// Tgz .tar.gz compressor
+// notification
 //
-// type: tgz
+// type: slack
 type Slack struct {
 	Base
 	webHook string
@@ -25,7 +25,10 @@ func (ctx *Slack) perform(backupPath string) (archivePath string, err error) {
 	if err != nil {
 		logger.Error(err)
 	}
+	//	logger.Info(ctx.lapor, "@@@@@@@@@@@@@@@@@@@@")
 	logger.Info("Backup Size (compressed) : ", getFileSizeReadable(fopen.Size()))
+
+	format := "2 Jan 2006 15:04:05 MST"
 
 	ctx.webHook = ctx.model.Notifications.Viper.GetString("webhook")
 	if len(ctx.webHook) == 0 {
@@ -37,22 +40,22 @@ func (ctx *Slack) perform(backupPath string) (archivePath string, err error) {
 		{
 		"attachments": [
 			{
-				"color": "#ffaaff",
+				"color": "#00ff00",
 				"pretext": "##### Backup Report for test.example.com",
 				"fields": [
 					{
 						"title": "Started",
-						"value": "11PM GMT+7",
+						"value": "` + ctx.lapor.StartTime.Format(format) + `",
 						"short": true
 					},
 					{
 						"title": "Finished",
-						"value": "1AM GMT+7",
+						"value": "` + ctx.lapor.EndTime.Format(format) + `",
 						"short": true
 					},
 					{
 						"title": "Duration",
-						"value": "02:15:10",
+						"value": "` + ctx.lapor.Duration + `",
 						"short": false
 					},
 					{

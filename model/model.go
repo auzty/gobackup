@@ -18,18 +18,21 @@ import (
 type Model struct {
 	Config config.ModelConfig
 }
+
+/*
 type Report struct {
 	StartTime time.Time
 	EndTime   time.Time
 	Duration  string
 }
+*/
 
 // Perform model
 func (ctx Model) Perform() {
-	var laporan Report
+	var laporan notification.Report
 	//laporan.StartTime, _ = time.Parse("2 Jan 2006 15:04", time.Now().String())
 	laporan.StartTime = time.Now()
-	logger.Info("##====== " + ctx.Config.Name + " ========")
+	logger.Info("====== " + ctx.Config.Name + " ========")
 	logger.Info("WorkDir:", ctx.Config.DumpPath+"\n")
 
 	err := database.Run(ctx.Config)
@@ -69,7 +72,7 @@ func (ctx Model) Perform() {
 }
 
 // Cleanup model temp files
-func (ctx Model) cleanup(archivePath string, laporan Report) {
+func (ctx Model) cleanup(archivePath string, laporan notification.Report) {
 	logger.Info("Cleanup temp dir:" + config.TempPath + "...\n")
 	err := os.RemoveAll(config.TempPath)
 	if err != nil {
@@ -77,16 +80,15 @@ func (ctx Model) cleanup(archivePath string, laporan Report) {
 	}
 	logger.Info("======= End " + ctx.Config.Name + " =======\n\n")
 
-	format := "2 Jan 2006 15:04:05 MST"
-	//	laporan.EndTime, err = time.Parse("2 Jan 2006 15:04", time.Since(laporan.StartTime))
+	//	format := "2 Jan 2006 15:04:05 MST"
 	tduration := time.Since(laporan.StartTime)
 	laporan.Duration = tduration.String()
 	laporan.EndTime = laporan.StartTime.Add(tduration)
-	//	laporan.Duration = laporan.EndTime.Sub(laporan.StartTime).String()
-	logger.Info("start : ", laporan.StartTime.Format(format))
-	logger.Info("end : ", laporan.EndTime.Format(format))
-	logger.Info("durasi : ", laporan.Duration)
-	_, err = notification.Run(ctx.Config, archivePath)
+	//	logger.Info("start : ", laporan.StartTime.Format(format))
+	//	logger.Info("end : ", laporan.EndTime.Format(format))
+	//	logger.Info("durasi : ", laporan.Duration)
+
+	_, err = notification.Run(ctx.Config, archivePath, laporan)
 	if err != nil {
 		logger.Error(err)
 		//		return

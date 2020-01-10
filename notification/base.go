@@ -13,6 +13,7 @@ type Base struct {
 	name  string
 	model config.ModelConfig
 	viper *viper.Viper
+	lapor Report
 }
 
 type Report struct {
@@ -26,18 +27,19 @@ type Context interface {
 	perform(backupPath string) (archivePath string, err error)
 }
 
-func newBase(model config.ModelConfig) (base Base) {
+func newBase(model config.ModelConfig, inputlaporan Report) (base Base, laporan Report) {
 	base = Base{
 		name:  model.Name,
 		model: model,
 		viper: model.Notifications.Viper,
+		lapor: inputlaporan,
 	}
 	return
 }
 
 // Run notification
-func Run(model config.ModelConfig, backupPath string) (archivePath string, err error) {
-	base := newBase(model)
+func Run(model config.ModelConfig, backupPath string, laporan Report) (archivePath string, err error) {
+	base, laporan := newBase(model, laporan)
 
 	//	logger.Info(model.Notifications, "######")
 	var ctx Context
