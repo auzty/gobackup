@@ -1,8 +1,8 @@
 package encryptor
 
 import (
-	"github.com/huacnlee/gobackup/config"
-	"github.com/huacnlee/gobackup/logger"
+	"github.com/auzty/gobackup/config"
+	"github.com/auzty/gobackup/logger"
 	"github.com/spf13/viper"
 )
 

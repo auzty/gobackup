@@ -6,7 +6,7 @@ import (
 	"path"
 	"time"
 
-	"github.com/huacnlee/gobackup/logger"
+	"github.com/auzty/gobackup/logger"
 	"github.com/spf13/viper"
 )
 
@@ -113,7 +113,7 @@ func loadModel(key string) (model ModelConfig) {
 
 	model.Archive = model.Viper.Sub("archive")
 
-	fmt.Println(model)
+	//	fmt.Println(model)
 
 	loadDatabasesConfig(&model)
 	loadStoragesConfig(&model)

@@ -7,9 +7,9 @@ import (
 	"path"
 	"time"
 
-	"github.com/huacnlee/gobackup/config"
-	"github.com/huacnlee/gobackup/helper"
-	"github.com/huacnlee/gobackup/logger"
+	"github.com/auzty/gobackup/config"
+	"github.com/auzty/gobackup/helper"
+	"github.com/auzty/gobackup/logger"
 )
 
 type PackageList []Package

@@ -1,7 +1,7 @@
 package storage
 
 import (
-	"github.com/huacnlee/gobackup/helper"
+	"github.com/auzty/gobackup/helper"
 	"golang.org/x/crypto/ssh"
 	"os"
 	"path"
@@ -9,7 +9,7 @@ import (
 	// "crypto/tls"
 	"github.com/bramvdbogaerde/go-scp"
 	"github.com/bramvdbogaerde/go-scp/auth"
-	"github.com/huacnlee/gobackup/logger"
+	"github.com/auzty/gobackup/logger"
 )
 
 // SCP storage

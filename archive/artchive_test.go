@@ -1,8 +1,8 @@
 package archive
 
 import (
-	"github.com/huacnlee/gobackup/config"
-	"github.com/huacnlee/gobackup/helper"
+	"github.com/auzty/gobackup/config"
+	"github.com/auzty/gobackup/helper"
 	"github.com/stretchr/testify/assert"
 	"strings"
 	"testing"
