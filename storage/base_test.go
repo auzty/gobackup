@@ -1,7 +1,7 @@
 package storage
 
 import (
-	"bitbucket.org/auzty/gobackup/config"
+	"github.com/auzty/gobackup/config"
 	"github.com/stretchr/testify/assert"
 	"testing"
 )

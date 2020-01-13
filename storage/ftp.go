@@ -4,12 +4,12 @@ import (
 	"os"
 	"path"
 
-	"bitbucket.org/auzty/gobackup/helper"
+	"github.com/auzty/gobackup/helper"
 
 	// "crypto/tls"
 	"time"
 
-	"bitbucket.org/auzty/gobackup/logger"
+	"github.com/auzty/gobackup/logger"
 	"github.com/secsy/goftp"
 )
 

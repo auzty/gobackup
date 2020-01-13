@@ -2,7 +2,7 @@ package encryptor
 
 import (
 	"fmt"
-	"bitbucket.org/auzty/gobackup/helper"
+	"github.com/auzty/gobackup/helper"
 )
 
 // OpenSSL encryptor for use openssl aes-256-cbc

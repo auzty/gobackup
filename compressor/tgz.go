@@ -1,7 +1,7 @@
 package compressor
 
 import (
-	"bitbucket.org/auzty/gobackup/helper"
+	"github.com/auzty/gobackup/helper"
 )
 
 // Tgz .tar.gz compressor

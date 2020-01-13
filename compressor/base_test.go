@@ -1,7 +1,7 @@
 package compressor
 
 import (
-	"bitbucket.org/auzty/gobackup/config"
+	"github.com/auzty/gobackup/config"
 	"github.com/stretchr/testify/assert"
 	"os"
 	"path"

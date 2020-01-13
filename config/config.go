@@ -6,7 +6,7 @@ import (
 	"path"
 	"time"
 
-	"bitbucket.org/auzty/gobackup/logger"
+	"github.com/auzty/gobackup/logger"
 	"github.com/spf13/viper"
 )
 

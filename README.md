@@ -11,7 +11,7 @@ You can write a config file, run `gobackup perform` command by once to dump data
 
 It’s allow you store the backup file to local, FTP, SCP, S3 .
 
-Forked from [https://bitbucket.org/auzty/gobackup]https://bitbucket.org/auzty/gobackup
+Forked from [https://github.com/auzty/gobackup]https://github.com/auzty/gobackup
 
 ## Features
 
@@ -82,7 +82,7 @@ GoBackup will seek config files in:
 - ~/.gobackup/gobackup.yml
 - /etc/gobackup/gobackup.yml
 
-Example config: [gobackup_test.yml](https://bitbucket.org/auzty/gobackup/blob/master/gobackup_test.yml)
+Example config: [gobackup_test.yml](https://github.com/auzty/gobackup/blob/master/gobackup_test.yml)
 
 ```yml
 models:
@@ -125,13 +125,16 @@ models:
         - /etc/logrotate.d/syslog
 ```
 
-sample config with postgresql
+sample config with postgresql and send notifications to slack
 
 ```yml
 models:
   base_test:
     compress_with:
       type: tgz
+    notifications:
+      type: slack
+      webhook: https://slack.com/hooks/fakkefk3211211klfk
     store_with:
       type: local
       keep: 10

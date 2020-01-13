@@ -8,7 +8,7 @@ import (
 	"strconv"
 	"strings"
 
-	"bitbucket.org/auzty/gobackup/logger"
+	"github.com/auzty/gobackup/logger"
 )
 
 // notification
@@ -29,6 +29,7 @@ func (ctx *Slack) perform(backupPath string) (archivePath string, err error) {
 	logger.Info("Backup Size (compressed) : ", getFileSizeReadable(fopen.Size()))
 
 	format := "2 Jan 2006 15:04:05 MST"
+	var messagestruct string
 
 	ctx.webHook = ctx.model.Notifications.Viper.GetString("webhook")
 	if len(ctx.webHook) == 0 {
@@ -36,12 +37,13 @@ func (ctx *Slack) perform(backupPath string) (archivePath string, err error) {
 	} else {
 		// sending data to mattermost
 
-		messagestruct := `
+		if ctx.lapor.BackupStatus == "200" {
+			messagestruct = `
 		{
 		"attachments": [
 			{
 				"color": "#00ff00",
-				"pretext": "##### Backup Report for test.example.com",
+				"pretext": "##### Backup Report for ` + ctx.model.Name + `",
 				"fields": [
 					{
 						"title": "Started",
@@ -68,6 +70,45 @@ func (ctx *Slack) perform(backupPath string) (archivePath string, err error) {
 		]
 		}
 		`
+		} else {
+			messagestruct = `
+		{
+		"attachments": [
+			{
+				"color": "#ff0000",
+				"pretext": "##### Backup Failed for ` + ctx.model.Name + `",
+				"fields": [
+					{
+						"title": "Started",
+						"value": "` + ctx.lapor.StartTime.Format(format) + `",
+						"short": true
+					},
+					{
+						"title": "Finished",
+						"value": "` + ctx.lapor.EndTime.Format(format) + `",
+						"short": true
+					},
+					{
+						"title": "Duration",
+						"value": "` + ctx.lapor.Duration + `",
+						"short": false
+					},
+					{
+						"title": "Backup Size",
+						"value": "` + getFileSizeReadable(fopen.Size()) + ` (compressed)",
+						"short": false
+					},
+					{
+						"title": "Log Message",
+						"value":"` + ctx.lapor.MessageString + `"
+					}
+				]
+			}
+		]
+		}
+		`
+
+		}
 
 		var jsonStr = []byte(messagestruct)
 		req, err := http.NewRequest("POST", ctx.webHook, bytes.NewBuffer(jsonStr))

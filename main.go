@@ -1,11 +1,10 @@
 package main
 
 import (
-	"fmt"
 	"os"
 
-	"bitbucket.org/auzty/gobackup/config"
-	"bitbucket.org/auzty/gobackup/model"
+	"github.com/auzty/gobackup/config"
+	"github.com/auzty/gobackup/model"
 	"gopkg.in/urfave/cli.v1"
 )
 
@@ -56,7 +55,7 @@ func performAll() {
 		}
 		m.Perform()
 	}
-	fmt.Println(config.Models)
+	//	fmt.Println(config.Models)
 }
 
 func performOne(modelName string) {

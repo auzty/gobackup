@@ -11,8 +11,8 @@ $ brew install dep
 ## Get Source
 
 ```
-$ go get bitbucket.org/auzty/gobackup
-$ cd $GOPATH/src/bitbucket.org/auzty/gobackup/
+$ go get github.com/auzty/gobackup
+$ cd $GOPATH/src/github.com/auzty/gobackup/
 $ dep ensure
 ```
 

@@ -4,14 +4,14 @@ import (
 	"os"
 	"time"
 
-	"bitbucket.org/auzty/gobackup/archive"
-	"bitbucket.org/auzty/gobackup/compressor"
-	"bitbucket.org/auzty/gobackup/config"
-	"bitbucket.org/auzty/gobackup/database"
-	"bitbucket.org/auzty/gobackup/encryptor"
-	"bitbucket.org/auzty/gobackup/logger"
-	"bitbucket.org/auzty/gobackup/notification"
-	"bitbucket.org/auzty/gobackup/storage"
+	"github.com/auzty/gobackup/archive"
+	"github.com/auzty/gobackup/compressor"
+	"github.com/auzty/gobackup/config"
+	"github.com/auzty/gobackup/database"
+	"github.com/auzty/gobackup/encryptor"
+	"github.com/auzty/gobackup/logger"
+	"github.com/auzty/gobackup/notification"
+	"github.com/auzty/gobackup/storage"
 )
 
 // Model class
@@ -30,6 +30,7 @@ type Report struct {
 // Perform model
 func (ctx Model) Perform() {
 	var laporan notification.Report
+	archiveLocation := ""
 	//laporan.StartTime, _ = time.Parse("2 Jan 2006 15:04", time.Now().String())
 	laporan.StartTime = time.Now()
 	logger.Info("====== " + ctx.Config.Name + " ========")
@@ -38,36 +39,54 @@ func (ctx Model) Perform() {
 	err := database.Run(ctx.Config)
 	if err != nil {
 		logger.Error(err)
-		return
+		//return
 	}
 
 	if ctx.Config.Archive != nil {
 		err = archive.Run(ctx.Config)
 		if err != nil {
 			logger.Error(err)
-			return
+			laporan.BackupStatus = "error"
+			laporan.MessageString = "Archiving Error \n" + laporan.MessageString + err.Error()
+			//return
+		} else {
+			laporan.BackupStatus = "ok"
 		}
+		archivePath, err := compressor.Run(ctx.Config)
+		if err != nil {
+			logger.Error(err)
+			laporan.BackupStatus = "error"
+			laporan.MessageString = "Compressing Error \n" + laporan.MessageString + err.Error()
+			//return
+		} else {
+			laporan.BackupStatus = "ok"
+		}
+
+		archivePath, err = encryptor.Run(archivePath, ctx.Config)
+		if err != nil {
+			logger.Error(err)
+			laporan.BackupStatus = "error"
+			laporan.MessageString = "Encrypting Error \n" + laporan.MessageString + err.Error()
+			//return
+		} else {
+			laporan.BackupStatus = "ok"
+		}
+
+		err = storage.Run(ctx.Config, archivePath)
+		if err != nil {
+			logger.Error(err)
+			laporan.BackupStatus = "error"
+			laporan.MessageString = "Storing using " + ctx.Config.StoreWith.Type + " Error \n```\n" + laporan.MessageString + err.Error() + "\n```"
+			//return
+		} else {
+			laporan.BackupStatus = "ok"
+		}
+		logger.Info("####################\n", laporan.MessageString)
+		archiveLocation = archivePath
+
 	}
 
-	archivePath, err := compressor.Run(ctx.Config)
-	if err != nil {
-		logger.Error(err)
-		return
-	}
-
-	archivePath, err = encryptor.Run(archivePath, ctx.Config)
-	if err != nil {
-		logger.Error(err)
-		return
-	}
-
-	err = storage.Run(ctx.Config, archivePath)
-	if err != nil {
-		logger.Error(err)
-		return
-	}
-
-	defer ctx.cleanup(archivePath, laporan)
+	defer ctx.cleanup(archiveLocation, laporan)
 
 }
 
