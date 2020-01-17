@@ -44,17 +44,15 @@ func Run(model config.ModelConfig, backupPath string, laporan Report) (archivePa
 	base, laporan := newBase(model, laporan)
 
 	//	logger.Info(model.Notifications, "######")
+	logger.Info("------------ Notification -------------")
 	var ctx Context
 	switch model.Notifications.Type {
 	case "slack":
 		ctx = &Slack{Base: base}
+		ctx.perform(backupPath)
 	default:
-		logger.Info("error default")
+		logger.Info("No Notification Set")
 	}
-
-	logger.Info("------------ Notification -------------")
-	ctx.perform(backupPath)
-
 	logger.Info("------------ -------------\n")
 
 	return

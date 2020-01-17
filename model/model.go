@@ -50,7 +50,7 @@ func (ctx Model) Perform() {
 			laporan.MessageString = "Archiving Error \n" + laporan.MessageString + err.Error()
 			//return
 		} else {
-			laporan.BackupStatus = "ok"
+			laporan.BackupStatus = "200"
 		}
 		archivePath, err := compressor.Run(ctx.Config)
 		if err != nil {
@@ -59,7 +59,7 @@ func (ctx Model) Perform() {
 			laporan.MessageString = "Compressing Error \n" + laporan.MessageString + err.Error()
 			//return
 		} else {
-			laporan.BackupStatus = "ok"
+			laporan.BackupStatus = "200"
 		}
 
 		archivePath, err = encryptor.Run(archivePath, ctx.Config)
@@ -69,7 +69,7 @@ func (ctx Model) Perform() {
 			laporan.MessageString = "Encrypting Error \n" + laporan.MessageString + err.Error()
 			//return
 		} else {
-			laporan.BackupStatus = "ok"
+			laporan.BackupStatus = "200"
 		}
 
 		err = storage.Run(ctx.Config, archivePath)
@@ -79,10 +79,24 @@ func (ctx Model) Perform() {
 			laporan.MessageString = "Storing using " + ctx.Config.StoreWith.Type + " Error \n```\n" + laporan.MessageString + err.Error() + "\n```"
 			//return
 		} else {
-			laporan.BackupStatus = "ok"
+			laporan.BackupStatus = "200"
 		}
-		logger.Info("####################\n", laporan.MessageString)
+		logger.Info("\n", laporan.MessageString)
 		archiveLocation = archivePath
+
+		//	format := "2 Jan 2006 15:04:05 MST"
+		tduration := time.Since(laporan.StartTime)
+		laporan.Duration = tduration.String()
+		laporan.EndTime = laporan.StartTime.Add(tduration)
+		//	logger.Info("start : ", laporan.StartTime.Format(format))
+		//	logger.Info("end : ", laporan.EndTime.Format(format))
+		//	logger.Info("durasi : ", laporan.Duration)
+
+		_, err = notification.Run(ctx.Config, archivePath, laporan)
+		if err != nil {
+			logger.Error(err)
+			return
+		}
 
 	}
 
@@ -98,19 +112,5 @@ func (ctx Model) cleanup(archivePath string, laporan notification.Report) {
 		logger.Error("Cleanup temp dir "+config.TempPath+" error:", err)
 	}
 	logger.Info("======= End " + ctx.Config.Name + " =======\n\n")
-
-	//	format := "2 Jan 2006 15:04:05 MST"
-	tduration := time.Since(laporan.StartTime)
-	laporan.Duration = tduration.String()
-	laporan.EndTime = laporan.StartTime.Add(tduration)
-	//	logger.Info("start : ", laporan.StartTime.Format(format))
-	//	logger.Info("end : ", laporan.EndTime.Format(format))
-	//	logger.Info("durasi : ", laporan.Duration)
-
-	_, err = notification.Run(ctx.Config, archivePath, laporan)
-	if err != nil {
-		logger.Error(err)
-		//		return
-	}
 
 }
